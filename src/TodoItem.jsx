@@ -12,8 +12,23 @@ const TodoItem = ({ item, list, setList }) => {
     setList(newList)
   }
   // console.log(i)
+  const colorOfDue = (date) => {
+    const current = new Date()
+    const due = new Date(date)
+    if(current < due) return 'green'
+    if(current > due && !current === due) return 'red'
+    return 'orange'
+    // if(current === due) return 'orange'
+    // if(current > due) return 'red'
+    // return 'green'
+    console.log("current", current, date)
+
+  }
+
+  // console.log(colorOfDue('2025-12-2'))
   return (
-    <li onDrop={e => {
+    <li 
+    onDrop={e => {
       e.preventDefault()
       const droppedId = e.dataTransfer.getData('text/plain')
       const currentId = item.id
@@ -28,7 +43,13 @@ const TodoItem = ({ item, list, setList }) => {
       // console.log(droppedId, currentId)
       // console.log(droppedIdx)
     }} onDragOver={e => e.preventDefault()} draggable={true} key={item.id} onDragStart={e => e.dataTransfer.setData('text/plain', item.id)}> 
-      {item.task} completed: <input type='checkbox' checked={item.completed} onChange={() => handleComplete(item.id)}/> <button onClick={() => handleDelete(item.id)}>delete</button>
+      <span style={{
+      background: colorOfDue(item.dueDate)
+    }}>{item.task}</span> completed: <input type='checkbox' checked={item.completed} onChange={() => handleComplete(item.id)}/> <button onClick={() => handleDelete(item.id)}>delete</button>
+    <span>Due: {item.dueDate}</span>
+     {colorOfDue(item.dueDate) === 'red' && item.completed === false && <span
+      style={{border: "1px solid red", padding: "2px"}}
+    >overdue</span>}
     </li>
   )
 }
