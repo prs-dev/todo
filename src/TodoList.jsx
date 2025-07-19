@@ -39,7 +39,24 @@ const TodoList = () => {
     localStorage.setItem('filter', filterState)
   }, [filterState])
 
-  console.log(list)
+  const stats = () => {
+    const total = list.length
+    const active = list.filter(item => item.completed === false).length
+    const completed = list.filter(item => item.completed !== false).length
+    const percentCompleted = (completed / total) * 100
+    return {
+      total,
+      active,
+      completed,
+      percentCompleted
+    }
+  }
+
+  const s = stats()
+
+  // console.log(stats())
+
+  // console.log(list)
   return (
     <div className={darkMode ? 'light' : "dark"}>
       <div style={{
@@ -57,6 +74,15 @@ const TodoList = () => {
           <TodoItem item={item} list={list} setList={setList} setTask={setTask} />
         ))}
       </ul>
+      {/* stats */}
+      <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
+        <p>Total Tasks: {s.total}</p>
+        <p>Active Tasks: {s.active}</p>
+        <p>Completed Tasks:  {s.completed}</p>
+        <div>
+          % Completed: <progress value={s.percentCompleted} max="100">{s.percentCompleted}</progress>
+        </div>
+      </div>
     </div>
   )
 }

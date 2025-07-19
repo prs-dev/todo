@@ -15,12 +15,12 @@ const TodoItem = ({ item, list, setList }) => {
   const colorOfDue = (date) => {
     const current = new Date()
     const due = new Date(date)
-    if(current < due) return 'green'
-    if(current > due && !current === due) return 'red'
-    return 'orange'
-    // if(current === due) return 'orange'
-    // if(current > due) return 'red'
-    // return 'green'
+    // if(current < due) return 'green'
+    // if(current > due && !current === due) return 'red'
+    // return 'orange'
+    if(current === due) return 'orange'
+    if(current > due) return 'red'
+    return 'green'
     console.log("current", current, date)
 
   }
