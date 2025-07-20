@@ -7,6 +7,7 @@ import TodoItem from './TodoItem'
 const TodoList = () => {
   const [task, setTask] = useState('')
   const [list, setList] = useState([])
+  const [search, setSearch] = useState('')
   const [filterState, setFilterState] = useState(() => localStorage.getItem('filter') || 'all')
   const firstRender = useRef(true)
   const [darkMode, setDarkMode] = useState(true)
@@ -52,7 +53,14 @@ const TodoList = () => {
     }
   }
 
-  const s = stats()
+  const s = stats() //performance wise a better choice
+
+  // useEffect(() => {
+  //   const newList = list.filter(item => {
+  //     return item.task.toLowerCase().includes(search.toLowerCase())
+  //   })
+  //   console.log(newList)
+  // },[search])
 
   // console.log(stats())
 
@@ -63,13 +71,13 @@ const TodoList = () => {
         display: "flex",
         gap: "40px"
       }}>
-        <FilterBar setFilterState={setFilterState} setList={setList} />
+        <FilterBar setFilterState={setFilterState} setList={setList} setSearch={setSearch} search={search}/>
         <button onClick={() => setDarkMode(!darkMode)}>{darkMode ? 'dark' : "light"}</button>
       </div>
       <TodoForm setList={setList} setTask={setTask} task={task} list={list}/>
       <ul>
         {list?.filter(item => {
-          return getList(item)
+          return getList(item) && item.task.toLowerCase().includes(search.toLowerCase())       
         }).map(item => (
           <TodoItem item={item} list={list} setList={setList} setTask={setTask} />
         ))}
