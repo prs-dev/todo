@@ -2,13 +2,16 @@ import React, { useEffect, useState, useRef } from 'react'
 import FilterBar from './FilterBar'
 import TodoForm from './TodoForm'
 import TodoItem from './TodoItem'
+import useLocalStore from './hooks/useLocalStore'
 
 //implementing local storage
 const TodoList = () => {
   const [task, setTask] = useState('')
-  const [list, setList] = useState([])
+  // const [list, setList] = useState([])
+  const [list, setList] = useLocalStore('todos', [])
   const [search, setSearch] = useState('')
-  const [filterState, setFilterState] = useState(() => localStorage.getItem('filter') || 'all')
+  const [filterState, setFilterState] = useLocalStore('filter', 'all')
+  // const [filterState, setFilterState] = useState(() => localStorage.getItem('filter') || 'all')
   const firstRender = useRef(true)
   const [darkMode, setDarkMode] = useState(true)
 
@@ -19,26 +22,26 @@ const TodoList = () => {
   }
 
   //to retrieve the list from localstorage at load
-  useEffect(() => {
-    const newList = localStorage.getItem('todos')
-    const filter = localStorage.getItem('filter')
-    if(newList) setList(JSON.parse(newList))
-    console.log('filter', filter)
+  // useEffect(() => {
+    // const newList = localStorage.getItem('todos')
+    // const filter = localStorage.getItem('filter')
+    // if(newList) setList(JSON.parse(newList))
+    // console.log('filter', filter)
     // console.log("test", newList)
     // setList(JSON.parse(newList))
-  },[])
+  // },[])
 
-  useEffect(() => {
-    if(firstRender.current) {
-      firstRender.current = false
-      return
-    }
-    localStorage.setItem('todos', JSON.stringify(list))
-  },[list])
+  // useEffect(() => {
+  //   if(firstRender.current) {
+  //     firstRender.current = false
+  //     return
+  //   }
+  //   localStorage.setItem('todos', JSON.stringify(list))
+  // },[list])
 
-  useEffect(() => {
-    localStorage.setItem('filter', filterState)
-  }, [filterState])
+  // useEffect(() => {
+  //   localStorage.setItem('filter', filterState)
+  // }, [filterState])
 
   const stats = () => {
     const total = list.length
