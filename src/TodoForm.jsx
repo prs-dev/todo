@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const TodoForm = ({ setList, setTask, task }) => {
+const TodoForm = ({ setList, setTask, task, user }) => {
   const [addDesc, setAddDesc] = useState(false)
   const [desc, setDesc] = useState('')
   const [dueDate, setDueDate] = useState()
@@ -20,7 +20,8 @@ const TodoForm = ({ setList, setTask, task }) => {
       task,
       completed: false,
       description: desc,
-      dueDate 
+      dueDate, 
+      user
     }])
     // storing in localstorage after new task
   }

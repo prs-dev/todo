@@ -3,17 +3,19 @@ import FilterBar from './FilterBar'
 import TodoForm from './TodoForm'
 import TodoItem from './TodoItem'
 import useLocalStore from './hooks/useLocalStore'
+import LoginForm from './LoginForm'
 
 //implementing local storage
 const TodoList = () => {
   const [task, setTask] = useState('')
   // const [list, setList] = useState([])
-  const [list, setList] = useLocalStore('todos', [])
+  const [list, setList] = useLocalStore('todos', []) //hook used here
   const [search, setSearch] = useState('')
-  const [filterState, setFilterState] = useLocalStore('filter', 'all')
+  const [filterState, setFilterState] = useLocalStore('filter', 'all') //hook used here 
   // const [filterState, setFilterState] = useState(() => localStorage.getItem('filter') || 'all')
-  const firstRender = useRef(true)
+  // const firstRender = useRef(true)
   const [darkMode, setDarkMode] = useState(true)
+  const [user, setUser] = useLocalStore('user', '')
 
   const getList = (item) => {
     if (filterState === 'all') return item
@@ -70,6 +72,9 @@ const TodoList = () => {
   // console.log(list)
   return (
     <div className={darkMode ? 'light' : "dark"}>
+      <div>
+        <h1>{user} logged in</h1>
+      </div>
       <div style={{
         display: "flex",
         gap: "40px"
@@ -77,10 +82,10 @@ const TodoList = () => {
         <FilterBar setFilterState={setFilterState} setList={setList} setSearch={setSearch} search={search}/>
         <button onClick={() => setDarkMode(!darkMode)}>{darkMode ? 'dark' : "light"}</button>
       </div>
-      <TodoForm setList={setList} setTask={setTask} task={task} list={list}/>
+      <TodoForm user={user} setList={setList} setTask={setTask} task={task} list={list}/>
       <ul>
         {list?.filter(item => {
-          return getList(item) && item.task.toLowerCase().includes(search.toLowerCase())       
+          return getList(item) && item.task.toLowerCase().includes(search.toLowerCase()) && item.user === user       
         }).map(item => (
           <TodoItem item={item} list={list} setList={setList} setTask={setTask} />
         ))}
@@ -94,6 +99,8 @@ const TodoList = () => {
           % Completed: <progress value={s.percentCompleted} max="100">{s.percentCompleted}</progress>
         </div>
       </div>
+      {/* login form */}
+      <LoginForm user={user} setUser={setUser}/>
     </div>
   )
 }
